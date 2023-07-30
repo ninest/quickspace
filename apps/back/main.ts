@@ -2,6 +2,7 @@ import cors from "cors";
 import express from "express";
 import http from "http";
 import { Server, type Socket } from "socket.io";
+import { ClientEmittedEvent } from "@packages/events";
 
 const app = express();
 const server = http.createServer(app);
@@ -13,18 +14,23 @@ app.get("/ping", (req, res) => {
   res.json({ ping: "pong" });
 });
 
+function handleEmittedEvent(socket: Socket, event: ClientEmittedEvent) {
+  switch (event.name) {
+    case "create-space": {
+      break;
+    }
+    case "join-space": {
+      break;
+    }
+    default: {
+      console.error(`Invalid event from client: ${event}`);
+    }
+  }
+}
+
 io.on("connection", (socket) => {
-  socket.on("hello", (data: any) => {
-    console.log("hello! ", data);
-    socket.emit("bye", { two: 2 });
-  });
-
-  socket.on("create-space", (data: any) => {
-    console.log(data);
-  });
-
-  socket.on("join-space", (data: any) => {
-    console.log(data);
+  socket.onAny((name, data) => {
+    handleEmittedEvent(socket, { name, data });
   });
 });
 
