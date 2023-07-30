@@ -1,18 +1,12 @@
 import { slugify } from "./utils";
 import cuid from "cuid";
-
-interface Space {
-  id: string;
-  name: string;
-  users: User[];
-}
-
-interface User {
-  id: string;
-  name: string;
-}
+import { Space, User } from "@packages/events/types";
 
 export const spaces: Space[] = [];
+
+export function getSpaceById(spaceId: string) {
+  return spaces.find((space) => space.id === spaceId);
+}
 
 export function createSpace(name: string) {
   const space: Space = {
