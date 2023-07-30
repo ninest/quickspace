@@ -1,0 +1,13 @@
+{
+  "name": "quickspace",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "front": "pnpm --filter @apps/front",
+    "back": "pnpm --filter @apps/back"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
