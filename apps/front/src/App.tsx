@@ -1,4 +1,18 @@
+import { useEffect } from "react";
+import { socket } from "./socket";
+
 function App() {
+  useEffect(() => {
+    socket.emit("hello", { one: 1 });
+
+    socket.on("bye", (data) => {
+      alert("bye" + data.two);
+    });
+
+    return () => {
+      socket.off("bye");
+    };
+  }, []);
   return (
     <>
       <main>
