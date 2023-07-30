@@ -1,14 +1,19 @@
 import { FormEvent, useState } from "react";
-import { emitEvent } from "./socket";
+import { useNavigate } from "react-router-dom";
+import { emitEvent, useSocketOn } from "./socket";
 
 export function CreateSpacePage() {
+  const navigate = useNavigate();
   const [name, setName] = useState("");
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     emitEvent({ name: "create-space", data: { name } });
   };
+
+  useSocketOn("redirect-to-new-space", ({ spaceId }) => {
+    navigate(`/${spaceId}`);
+  });
 
   return (
     <>
@@ -21,4 +26,4 @@ export function CreateSpacePage() {
       </main>
     </>
   );
-} 
+}

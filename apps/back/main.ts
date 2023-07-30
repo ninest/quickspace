@@ -2,7 +2,8 @@ import cors from "cors";
 import express from "express";
 import http from "http";
 import { Server, type Socket } from "socket.io";
-import { ClientEmittedEvent } from "@packages/events";
+import { ClientEmittedEvent, ServerEmittedEvent } from "@packages/events";
+import { createSpace } from "./store";
 
 const app = express();
 const server = http.createServer(app);
@@ -14,9 +15,16 @@ app.get("/ping", (req, res) => {
   res.json({ ping: "pong" });
 });
 
+function emitEvent(socket: Socket, event: ServerEmittedEvent) {
+  socket.emit(event.name, event.data);
+}
+
 function handleEmittedEvent(socket: Socket, event: ClientEmittedEvent) {
   switch (event.name) {
     case "create-space": {
+      const { name } = event.data;
+      const newSpace = createSpace(event.data.name);
+      emitEvent(socket, { name: "redirect-to-new-space", data: { spaceId: newSpace.id } });
       break;
     }
     case "join-space": {

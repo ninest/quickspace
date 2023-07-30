@@ -5,6 +5,7 @@ import { CreateSpacePage } from "./create-space.page.tsx";
 import "./index.css";
 import { IndexPage } from "./index.page.tsx";
 import { RootLayout } from "./root.layout.tsx";
+import { SpacePage } from "./space/index.page.tsx";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
       {
         path: "/create",
         element: <CreateSpacePage />,
+      },
+      {
+        path: "/:spaceId",
+        element: <SpacePage />,
       },
     ],
   },
